@@ -1,40 +1,10 @@
-const Koa = require('koa');
 const Router = require('@koa/router');
-const bodyParser = require('koa-bodyparser');
-const Joi = require('joi')
+const Joi = require("joi");
+const {BaseError} = require("./Error");
+
+const router = new Router();
 
 const database = [];
-const router = require('./Routers');
-
-class BaseError extends Error
-{
-    constructor(message, statusCode)
-    {
-        super(message);
-        this.status = statusCode;
-    }
-    getStatus(){
-        return this.status
-    }
-}
-
-const app = new Koa();
-
-const myMiddleWare = (async (ctx, next)=> {
-    try {
-        const resp = await next() ;
-        ctx.body = {
-            data: resp
-        }
-    } catch(e){
-        ctx.body = {
-            error: e.message,
-            statusCode: e.getStatus()
-        }
-    }
-})
-
-app.use(bodyParser())
 
 router.get('/users/:name', (ctx, next) => {
     const {name} = ctx.params;
@@ -87,9 +57,6 @@ router.put('/users', (ctx, next) => {
                 firstName: body.firstName,
                 lastName: body.lastName
             });
-            // ctx.body = {
-            //     success: true
-            // };
             return {
                 name: body.name,
                 firstName: body.firstName,
@@ -105,9 +72,6 @@ router.put('/users', (ctx, next) => {
                 }
             }
             const {name: userName, firstName, lastName} = searchObject;
-            // ctx.body = {
-            //     success: true
-            // }
             return{
                 name: userName,
                 firstName:firstName,
@@ -115,11 +79,6 @@ router.put('/users', (ctx, next) => {
             };
         }
     } else {
-        // ctx.response.status = 404;
-        // ctx.body = {
-        //     error: 'Validation error'
-        // };
-        // return;
         throw new BaseError("Validation Error", 400)
     }
 });
@@ -150,15 +109,9 @@ router.patch('/users', (ctx, next) => {
             firstName:body.firstName,
             lastName:body.lastName
         };
-    }else {
-        throw new BaseError("Validation Error", 400)
+    } else {
+        throw new BaseError("Validation Error",400);
     }
 });
 
-app
-    .use(myMiddleWare)
-    .use(router.routes())
-    .use(router.allowedMethods());
-
-
-app.listen(3000);
+module.exports=router;
