@@ -5,33 +5,46 @@ const Joi = require('joi')
 
 const database = [];
 
+class BaseError extends Error
+{
+    constructor(message, statusCode)
+    {
+        super(message);
+        this.status = statusCode;
+    }
+    getStatus(){
+        return this.status
+    }
+}
+
 const app = new Koa();
 const router = new Router();
-const myLogger = (async (ctx, next)=> {
+const myMiddleWare = (async (ctx, next)=> {
     try {
         const resp = await next() ;
         ctx.body = {
             data: resp
         }
-    } catch(err){
-        ctx.response.status = 404;
+    } catch(e){
         ctx.body = {
-            error: 'Error is thrown';
-    }
+                error: e.message,
+                statusCode: e.getStatus()
+            }
+        }
 })
 
 app.use(bodyParser())
 
 
-router.get('/bye', (ctx, next) => {
-    ctx.body = 'Bye';
-});
+// router.get('/bye', (ctx, next) => {
+//     ctx.body = 'Bye';
+// });
 router.get('/users/:name', (ctx, next) => {
-    try{
+    // try{
     const {name} = ctx.params;
     const searchObject = database.find((item) => item.name === name);
     const {name: userName, firstName, lastName} = searchObject;
-    ctx.body = {
+    /* ctx.body = {
         name: userName,
         firstName: firstName,
         lastName: lastName
@@ -41,7 +54,12 @@ router.get('/users/:name', (ctx, next) => {
         ctx.body = {
             error: 'Error Not Found'
         };
-    }
+    } */
+        return {
+            name: userName,
+            firstName: firstName,
+            lastName: lastName
+        }
 });
 
 router.post('/users', (ctx, next) => {
@@ -58,14 +76,20 @@ router.post('/users', (ctx, next) => {
             firstName: body.firstName,
             lastName: body.lastName
         });
-        ctx.body = {
-            key: "success"
-        };
+        // ctx.body = {
+        //     key: "success"
+        // };
+        return {
+            name: body.name,
+            firstName: body.firstName,
+            lastName: body.lastName
+        }
     } else {
-        ctx.response.status = 404;
-        ctx.body = {
-            error: 'Validation error'
-        };
+        // ctx.response.status = 404;
+        // ctx.body = {
+        //     error: 'Validation error'
+        // };
+        throw new BaseError("Validation Error", 400)
     }
 });
 
@@ -85,11 +109,16 @@ router.put('/users', (ctx, next) => {
                 firstName: body.firstName,
                 lastName: body.lastName
             });
-            ctx.body = {
-                success: true
+            // ctx.body = {
+            //     success: true
+            // };
+            return {
+                name: body.name,
+                firstName: body.firstName,
+                lastName: body.lastName
             };
-            return;
         } else {
+            const searchObject = database.find((item) => item.name === body.name);
             for (const item of database) {
                 if (item.name === body.name) {
                     item.firstName = body.firstName;
@@ -97,17 +126,23 @@ router.put('/users', (ctx, next) => {
                     break;
                 }
             }
-            ctx.body = {
-                success: true
-            }
-            return;
+            const {name: userName, firstName, lastName} = searchObject;
+            // ctx.body = {
+            //     success: true
+            // }
+            return{
+                name: userName,
+                firstName:firstName,
+                lastName:lastName
+            };
         }
     } else {
-        ctx.response.status = 404;
-        ctx.body = {
-            error: 'Validation error'
-        };
-        return;
+        // ctx.response.status = 404;
+        // ctx.body = {
+        //     error: 'Validation error'
+        // };
+        // return;
+        throw new BaseError("Validation Error", 400)
     }
 });
 
@@ -131,27 +166,27 @@ router.patch('/users', (ctx, next) => {
                     ...body
                 }
             }
-        }
-       /* return {
-            data: "everything is fine"
-        }*/
-        ctx.body = {
-              success:"true"
+        };
+        return {
+            name: body.name,
+            firstName:body.firstName,
+            lastName:body.lastName
           };
     }else {
-          ctx.response.status = 404;
-      /*    return {
-              success: 'Validation error'
-          }
-          throw new Error("")*/
-          ctx.body = {
-               error: 'Validation error'
-           };
+      //     ctx.response.status = 404;
+      // /*    return {
+      //         success: 'Validation error'
+      //     }
+      //     throw new Error("")*/
+      //     ctx.body = {
+      //          error: 'Validation error'
+      //      };
+        throw new BaseError("Validation Error", 400)
     }
 });
 
 app
-    .use(myLogger)
+    .use(myMiddleWare)
     .use(router.routes())
     .use(router.allowedMethods());
 
