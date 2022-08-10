@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start" : "nodemon jss.js"
+    "start": "nodemon jss.js"
   },
   "keywords": [],
   "author": "",
@@ -15,10 +15,22 @@
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^12.0.0",
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.4",
     "request": "^2.88.2",
-    "require": "^2.4.20"
+    "require": "^2.4.20",
+    "sequelize": "^6.21.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.19"
-  }
+    "nodemon": "^2.0.19",
+    "sequelize-cli": "^6.4.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NareAmiryan/NodeJS.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NareAmiryan/NodeJS/issues"
+  },
+  "homepage": "https://github.com/NareAmiryan/NodeJS#readme"
 }
