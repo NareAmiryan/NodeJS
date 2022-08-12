@@ -1,5 +1,6 @@
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
+const { sequelize } = require('./models/index');
 
 const router = require('./routers/router');
 
@@ -14,7 +15,7 @@ const myMiddleWare = (async (ctx, next)=> {
     } catch(e){
         ctx.body = {
                 error: e.message,
-                statusCode: e.getStatus()
+                statusCode: e.getStatus
             }
         }
 })
@@ -26,4 +27,14 @@ app
     .use(router.allowedMethods());
 
 
-app.listen(3000);
+sequelize.authenticate().then(async () => {
+    console.log("connected to DB!");
+    await sequelize.sync({force: true});
+
+    app.listen(63342, ()=> {
+        console.log("App is running")
+    });
+
+}).catch((err) => {
+    console.log(err);
+});

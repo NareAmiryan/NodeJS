@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BackEnd Development</title>
+    <link rel="stylesheet" type="text/css" href="jss.css" />
+</head>
+<body>
+<form>
+    <h2>GET</h2>
+    <br>
+<input type="text" id="GET" name="GET" style="height: 40px;width:200px">
+    <button id="get1" onclick="getUser()">GET</button>
+</form>
+<br><br>
+<form>
+    <h2>POST</h2>
+    <p>Name</p>
+    <input type="text" id="name1" name="POST" style="height: 40px;width:120px">
+    <br>
+    <p>FirstName</p>
+    <input type="text" id="firstname1" name="POST" style="height: 40px;width:120px">
+    <br>
+    <p>LastName</p>
+    <input type="text" id="lastname1" name="POST" style="height: 40px;width:120px">
+    <button id="post1" onclick="addUser()">POST</button>
+</form>
+<br><br>
+<form>
+    <h2>PUT</h2>
+    <p>Name</p>
+    <input type="text" id="name2" name="PUT" style="height: 40px;width:120px">
+    <br>
+    <p>FirstName</p>
+    <input type="text" id="firstname2" name="PUT" style="height: 40px;width:120px">
+    <br>
+    <p>LastName</p>
+    <input type="text" id="lastname2" name="PUT" style="height: 40px;width:120px">
+    <button id="put1" onclick="putUser()">PUT</button>
+</form>
+
+<form>
+    <h2>PATCH</h2>
+    <p>Name</p>
+    <input type="text" id="name3" name="PATCH" style="height: 40px;width:120px">
+    <br>
+    <p>FirstName</p>
+    <input type="text" id="firstname3" name="PATCH" style="height: 40px;width:120px">
+    <br>
+    <p>LastName</p>
+    <input type="text" id="lastname3" name="PATCH" style="height: 40px;width:120px">
+    <button id="patch1" onclick="patchUser()">PATCH</button>
+</form>
+
+<script>
+    // console.log(nameValue, "5855858")
+    // const postBtn=document.getElementById('POST');
+    // const input=document.getElementById('get1');
+    // const input1=document.getElementById('post1');
+    //.then(()=> alert(res))
+    // const baseUrl='http://localhost:3000/users/'
+
+    const getUser = ()=> {
+        const nameValue = document.getElementById('GET').value;
+        const res = fetch(`http://localhost:3000/users/${nameValue}`,{
+                    method:'GET'
+                }).then(()=> alert(res));
+    }
+
+    const addUser=()=>{
+        const name=document.getElementById('name1').value;
+        const firstName=document.getElementById('firstName1').value;
+        const lastName=document.getElementById('lastName1').value;
+        const res=fetch(`http://localhost:3000/users/`,{
+                     method:'POST',
+                     body: {
+                        name:name,
+                        firstName:firstName,
+                        lastName:lastName
+                    }
+        }).then(()=>alert(res))
+    }
+
+    const putUser=()=>{
+        const name=document.getElementById('name2').value;
+        const firstName=document.getElementById('firstName2').value;
+        const lastName=document.getElementById('lastName2').value;
+        const res=fetch(`http://localhost:3000/users/`,{
+            method:'PUT',
+            body: {
+                name:name,
+                firstName:firstName,
+                lastName:lastName
+            }
+        }).then(()=>alert(res))
+    }
+
+    const patchUser=()=>{
+        const name=document.getElementById('name3').value;
+        const firstName=document.getElementById('firstName3').value;
+        const lastName=document.getElementById('lastName3').value;
+        const res=fetch(`http://localhost:3000/users/`,{
+            method:'PATCH',
+            body: {
+                name:name,
+                firstName:firstName,
+                lastName:lastName
+            }
+        }).then(()=>alert(res))
+    }
+    // async function getInfo(e){
+    //     e.preventDefault();
+    //     const res=fetch(baseUrl,{
+    //         method:'GET'
+    //     })
+    //     console.log(res);
+    //     const data=await res.json();
+    //     // input.value=data;
+    //     return data;
+    // }
+    // postBtn.addEventListener('click',postInfo);
+    // async function postInfo(e){
+    //     e.preventDefault();
+    //     if(input1.value == ''){return}
+    //     const response =fetch(baseUrl,{
+    //         method:'POST',
+    //         headers:{
+    //             'Content-Type':'application/json'
+    //         },
+    //         body:JSON.stringify(input1.value)
+    //     });
+    //     const data=await response.json()
+    //     return data;
+    // }
+</script>
+</body>
+</html>
