@@ -10,7 +10,7 @@
     <h2>GET</h2>
     <br>
 <input type="text" id="GET" name="GET" style="height: 40px;width:200px">
-    <button id="get1" onclick="getUser()">GET</button>
+<button id="get1" onclick="getUser()">GET</button>
 </form>
 <br><br>
 <form>
@@ -67,10 +67,12 @@
                 }).then(()=> alert(res));
     }
 
-    const addUser=()=>{
-        const name=document.getElementById('name1').value;
-        const firstName=document.getElementById('firstName1').value;
-        const lastName=document.getElementById('lastName1').value;
+    const addUser= ()=> {
+        alert(e)
+        const name = document.getElementById('name1').value;
+        const firstName = document.getElementById('firstName1').value;
+        const lastName = document.getElementById('lastName1').value;
+        alert('name')
         const res=fetch(`http://localhost:3000/users/`,{
                      method:'POST',
                      body: {
