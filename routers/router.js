@@ -13,8 +13,10 @@ router.get('/users/:name', (ctx, next) => {
 });
 
 router.post('/users', async (ctx, next) => {
+    console.log(ctx.request);
     const { body:{ name, firstName, lastName } } = ctx.request;
     const {body}=ctx.request;
+
     const schema = Joi.object().keys({
         name: Joi.string().required(),
         firstName: Joi.string().required(),

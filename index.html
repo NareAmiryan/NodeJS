@@ -16,99 +16,112 @@
 <form>
     <h2>POST</h2>
     <p>Name</p>
-    <input type="text" id="name1" name="POST" style="height: 40px;width:120px">
+    <input type="text" placeholder="Enter name" id="name1"  style="height: 40px;width:120px">
     <br>
     <p>FirstName</p>
-    <input type="text" id="firstname1" name="POST" style="height: 40px;width:120px">
+    <input type="text" placeholder="Enter firstname" id="firstname1"  style="height: 40px;width:120px">
     <br>
     <p>LastName</p>
-    <input type="text" id="lastname1" name="POST" style="height: 40px;width:120px">
+    <input type="text" id="lastname1" placeholder="Enter lastname" style="height: 40px;width:120px">
     <button id="post1" onclick="addUser()">POST</button>
 </form>
 <br><br>
 <form>
     <h2>PUT</h2>
     <p>Name</p>
-    <input type="text" id="name2" name="PUT" style="height: 40px;width:120px">
+    <input type="text" id="name2" placeholder="Enter name" style="height: 40px;width:120px">
     <br>
     <p>FirstName</p>
-    <input type="text" id="firstname2" name="PUT" style="height: 40px;width:120px">
+    <input type="text" id="firstname2" placeholder="Enter firstname" style="height: 40px;width:120px">
     <br>
     <p>LastName</p>
-    <input type="text" id="lastname2" name="PUT" style="height: 40px;width:120px">
+    <input type="text" id="lastname2" placeholder="Enter lastname"  style="height: 40px;width:120px">
     <button id="put1" onclick="putUser()">PUT</button>
 </form>
 
 <form>
     <h2>PATCH</h2>
     <p>Name</p>
-    <input type="text" id="name3" name="PATCH" style="height: 40px;width:120px">
+    <input type="text" id="name3" placeholder="Enter name" style="height: 40px;width:120px">
     <br>
     <p>FirstName</p>
-    <input type="text" id="firstname3" name="PATCH" style="height: 40px;width:120px">
+    <input type="text" id="firstname3" placeholder="Enter firstname" style="height: 40px;width:120px">
     <br>
     <p>LastName</p>
-    <input type="text" id="lastname3" name="PATCH" style="height: 40px;width:120px">
+    <input type="text" id="lastname3" placeholder="Enter lastname" style="height: 40px;width:120px">
     <button id="patch1" onclick="patchUser()">PATCH</button>
 </form>
 
 <script>
-    // console.log(nameValue, "5855858")
-    // const postBtn=document.getElementById('POST');
-    // const input=document.getElementById('get1');
-    // const input1=document.getElementById('post1');
-    //.then(()=> alert(res))
-    // const baseUrl='http://localhost:3000/users/'
 
-    const getUser = ()=> {
+    const getUser = async ()=> {
         const nameValue = document.getElementById('GET').value;
-        const res = fetch(`http://localhost:3000/users/${nameValue}`,{
+         await fetch(`http://localhost:3000/users/${nameValue}`,{
                     method:'GET'
-                }).then(()=> alert(res));
+                }).then(data=> data.json());
     }
 
-    const addUser= ()=> {
-        alert(e)
-        const name = document.getElementById('name1').value;
-        const firstName = document.getElementById('firstName1').value;
-        const lastName = document.getElementById('lastName1').value;
-        alert('name')
-        const res=fetch(`http://localhost:3000/users/`,{
+    const addUser= async()=> {
+         const name = document.getElementById('name1').value;
+         const firstName = document.getElementById('firstname1').value;
+         const lastName = document.getElementById('lastname1').value;
+         const res= await fetch('http://localhost:3000/users/',{
                      method:'POST',
-                     body: {
-                        name:name,
-                        firstName:firstName,
-                        lastName:lastName
-                    }
-        }).then(()=>alert(res))
+                     headers: {
+                        'Content-Type': 'application/json'
+                     },
+                        mode: 'cors',
+                        cache: 'default',
+                        body: JSON.stringify({
+                            name:name,
+                            firstName:firstName,
+                            lastName:lastName
+                        })
+        })
+          const data=await res.json();
+          return data;
     }
 
-    const putUser=()=>{
+    const putUser = async () => {
         const name=document.getElementById('name2').value;
-        const firstName=document.getElementById('firstName2').value;
-        const lastName=document.getElementById('lastName2').value;
-        const res=fetch(`http://localhost:3000/users/`,{
+        const firstName=document.getElementById('firstname2').value;
+        const lastName=document.getElementById('lastname2').value;
+        const res=await fetch(`http://localhost:3000/users/`,{
             method:'PUT',
-            body: {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors',
+            cache: 'default',
+            body: JSON.stringify({
                 name:name,
                 firstName:firstName,
                 lastName:lastName
-            }
-        }).then(()=>alert(res))
+            })
+        })
+        const data=await res.json();
+        return data;
     }
 
-    const patchUser=()=>{
+    const patchUser=async()=>{
         const name=document.getElementById('name3').value;
-        const firstName=document.getElementById('firstName3').value;
-        const lastName=document.getElementById('lastName3').value;
-        const res=fetch(`http://localhost:3000/users/`,{
+        const firstName=document.getElementById('firstname3').value;
+        const lastName=document.getElementById('lastname3').value;
+        const res=await fetch(`http://localhost:3000/users/`,{
             method:'PATCH',
-            body: {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors',
+            cache: 'default',
+            body: JSON.stringify({
                 name:name,
                 firstName:firstName,
                 lastName:lastName
-            }
-        }).then(()=>alert(res))
+            })
+        })
+        const data=await res.json();
+        return data;
     }
     // async function getInfo(e){
     //     e.preventDefault();

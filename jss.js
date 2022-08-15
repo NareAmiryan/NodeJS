@@ -1,5 +1,6 @@
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
+const cors = require('@koa/cors');
 const { sequelize } = require('./models/index');
 
 const router = require('./routers/router');
@@ -18,10 +19,14 @@ const myMiddleWare = (async (ctx, next)=> {
                 statusCode: e.getStatus
             }
         }
-})
+});
+const options = {
+    origin: '*'
+};
 
 app
     .use(bodyParser())
+    .use(cors(options))
     .use(myMiddleWare)
     .use(router.routes())
     .use(router.allowedMethods());
@@ -31,7 +36,7 @@ sequelize.authenticate().then(async () => {
     console.log("connected to DB!");
     await sequelize.sync({force: true});
 
-    app.listen(63342, ()=> {
+    app.listen(3000, ()=> {
         console.log("App is running")
     });
 
